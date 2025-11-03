@@ -1,7 +1,9 @@
 package lotto;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class LottoMachine
 {
@@ -14,6 +16,42 @@ public class LottoMachine
   public interface GenerateNumberStrategy {
     List<Integer> generate();
 }
+
+  /**
+   * 구매한 로또들과 당첨 번호를 비교하여 등수별 해당하는 로또 수 통계 계산
+   *
+   * @param lottos 구매 로도 리스트
+   * @param winningLotto 당첨 번호 객체
+   * @return {등수: 해당 개수} 형태의 Map
+   */
+  public Map<Rank, Integer> calculateResults(List<Lotto> lottos, WinningLotto winningLotto) {
+    Map<Rank, Integer> result = new EnumMap<>(Rank.class);
+    for (Rank rank : Rank.values()) {
+      result.put(rank, 0);
+    }
+    for (Lotto lotto : lottos) {
+      Rank rank = lotto.checkRank(winningLotto);
+      result.put(rank, result.get(rank) + 1);
+    }
+    return result;
+  }
+
+  /**
+   * 계산된 통계를 바탕으로 수익률 계산
+   *
+   * @param result 등수별 로또 수 통계
+   * @param amount 총 구입 금액
+   * @return 수익률(퍼센트)
+   */
+  public double calculateProfitRate(Map<Rank, Integer> result, int amount) {
+    double totalProfit = 0;
+    for (Map.Entry<Rank, Integer> entry : result.entrySet()) {
+      Rank rank = entry.getKey();
+      int count = entry.getValue();
+      totalProfit += (double)rank.getPrizeMoney()*count;
+    }
+    return (totalProfit/amount) * 100.0;
+  }
 
   /**
    * 구입 금액만큼의 로또 발행
