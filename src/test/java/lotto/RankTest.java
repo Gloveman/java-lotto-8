@@ -37,4 +37,20 @@ void of_ReturnsCorrectRank(int matchCount,boolean bonusCorrect, Rank correctRank
     int PrizeMoney = rank.getPrizeMoney();
     assertThat(PrizeMoney).isEqualTo(correctAmount);
   }
+
+  @DisplayName("getDisc")
+  @ParameterizedTest
+  @CsvSource({
+      "FIRST, 6개 일치",
+      "SECOND, '5개 일치, 보너스 볼 일치'",
+      "THIRD, 5개 일치",
+      "FOURTH, 4개 일치",
+      "FIFTH, 3개 일치",
+      "LOSE, 꽝"
+  }
+  )
+  void getDescription_ReturnsCorrectly(Rank rank, String correctDescription){
+    String description = rank.getDescription();
+    assertThat(description).isEqualTo(correctDescription);
+  }
 }
