@@ -41,7 +41,7 @@ public class LottoController {
     }
   }
 
-  private int parseAmount(String input) {
+  int parseAmount(String input) {
     try {
       return Integer.parseInt(input);
     } catch (NumberFormatException eI) {
@@ -49,7 +49,7 @@ public class LottoController {
     }
   }
 
-  private List<Integer> parseWinningNumbers(List<String> inputStrings) {
+  List<Integer> parseWinningNumbers(List<String> inputStrings) {
     try {
       return inputStrings.stream()
           .map(Integer::parseInt)
@@ -59,7 +59,7 @@ public class LottoController {
     }
   }
 
-  private int parseBonusNumber(String input) {
+  int parseBonusNumber(String input) {
     try {
       return Integer.parseInt(input);
     } catch (NumberFormatException eI) {

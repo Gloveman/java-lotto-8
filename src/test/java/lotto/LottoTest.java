@@ -7,7 +7,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
-
 class LottoTest {
     @Test
     void 로또_번호의_개수가_6개가_넘어가면_예외가_발생한다() {
@@ -34,5 +33,25 @@ class LottoTest {
   void 로또_번호가_올바르게_입력되면_오름차순_정렬된_상태로_인스턴스가_생성된다() {
       Lotto validlotto = new Lotto(List.of(6, 5, 4, 2, 3, 1));
       assertThat(validlotto.getNumbers()).containsExactly(1, 2, 3, 4, 5, 6);
+  }
+
+  @DisplayName("contains: 당첨번호에 해당 번호가 포함되면 true를 반환한다")
+  @Test
+  void contains_ReturnTrue() {
+    Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+    assertThat(lotto.contains(1)).isTrue();
+  }
+  @DisplayName("contains: 당첨번호에 해당 번호가 포함되지 않으면 false를 반환한다")
+  @Test
+  void contains_ReturnFalse() {
+    Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+    assertThat(lotto.contains(41)).isFalse();
+  }
+
+  @DisplayName("countMatches: 일치하는 개수를 정확하게 반환한다")
+  @Test
+  void countMatches_ReturnCorrectValue() {
+      Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+      assertThat(lotto.countMatches(List.of(1, 2, 3, 34, 35, 36))).isEqualTo(3);
   }
 }

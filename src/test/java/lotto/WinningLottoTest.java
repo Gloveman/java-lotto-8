@@ -7,13 +7,56 @@ import org.junit.jupiter.api.BeforeEach;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class WinningLottoTest {
+  private List<Integer> validWinningNumbers;
   private WinningLotto winningLotto;
 
   @BeforeEach
   void setup() {
-    winningLotto = new WinningLotto(List.of(1, 2, 3, 4, 5, 6),7);
+    validWinningNumbers = List.of(1, 2, 3, 4, 5, 6);
+    winningLotto = new WinningLotto(validWinningNumbers,7);
+
+  }
+
+  @Test
+  @DisplayName("당첨 번호가 잘못 입력되면 예외가 전달된다")
+  void constructor_InvalidLottoNumbers_ShouldThrowException() {
+    // given
+    List<Integer> duplicatedNumbers = List.of(1, 2, 3, 4, 5, 5); // 5 중복
+    int validBonusNumber = 7;
+
+    // when & then
+    // 'new Lotto(numbers)'에서 발생한 예외가 그대로 전달됨
+    assertThatThrownBy(() -> new WinningLotto(duplicatedNumbers, validBonusNumber))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  @DisplayName("보너스 번호가 당첨 번호와 중복되면 예외가 발생한다")
+  void constructor_DuplicateBonusNumber_ShouldThrowException() {
+    // given
+    int duplicateBonusNumber = 6; // 당첨 번호 '6'과 중복
+
+    // when & then
+    assertThatThrownBy(() -> new WinningLotto(validWinningNumbers, duplicateBonusNumber))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  @DisplayName("보너스 번호가 1~45 범위를 벗어나면 예외가 발생한다")
+  void constructor_BonusNumberOutOfRange_ShouldThrowException() {
+    // given
+    int lowBonusNumber = 0;
+    int highBonusNumber = 46;
+
+    // when & then
+    assertThatThrownBy(() -> new WinningLotto(validWinningNumbers, lowBonusNumber))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    assertThatThrownBy(() -> new WinningLotto(validWinningNumbers, highBonusNumber))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
