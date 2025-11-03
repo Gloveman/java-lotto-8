@@ -18,6 +18,20 @@ public class LottoMachine
 }
 
   /**
+   * 구입 금액이 올바르게 입력되었는지 검사
+   *
+   * @param amount 구입 금액
+   */
+  public void validatePurchaseAmount(int amount) {
+    if (amount < LOTTO_PRICE) {
+      throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 이상이어야 합니다.");
+    }
+    if (amount % LOTTO_PRICE != 0) {
+      throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위여야 합니다.");
+    }
+  }
+
+  /**
    * 구매한 로또들과 당첨 번호를 비교하여 등수별 해당하는 로또 수 통계 계산
    *
    * @param lottos 구매 로도 리스트

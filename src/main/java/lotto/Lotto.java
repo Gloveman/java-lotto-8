@@ -45,7 +45,8 @@ public class Lotto {
   }
 
   /**
-   *
+   * 두 로또 번호 사이에 일치 개수 계산
+   * 
    * @param otherNumbers 다른 번호 리스트
    * @return 일치 개수
    */
@@ -63,7 +64,11 @@ public class Lotto {
       return numbers;
     }
 
-    private void validate(List<Integer> numbers) {
+  /**
+   * 주어진 로또 번호가 유효한지 검사
+   * @param numbers 로또 번호 리스트
+   */
+  public static void validate(List<Integer> numbers) {
         if (numbers.size() != TOTAL_NUMBERS) {
             throw new IllegalArgumentException("[ERROR] 로또 번호는 "+TOTAL_NUMBERS+"개여야 합니다.");
         }
