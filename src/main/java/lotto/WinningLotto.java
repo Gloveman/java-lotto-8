@@ -7,12 +7,17 @@ import java.util.List;
  *
  */
 public class WinningLotto {
-  private final List<Integer> numbers;
+  private static final int MIN_NUMBER = 1;
+  private static final int MAX_NUMBER = 45;
+
+  private final Lotto winningNumbers;
   private final int  bonusNumber;
 
   public WinningLotto(List<Integer> numbers, int bonusNumber) {
-    this.numbers = numbers;
+    this.winningNumbers = new Lotto(numbers);
+    validateBonusNumber(bonusNumber);
     this.bonusNumber = bonusNumber;
+
   }
 
   /**
@@ -24,10 +29,17 @@ public class WinningLotto {
    * @return {@code Rank.of}로 계산한 등수 Enum
    */
   public Rank calculateRank(List<Integer> randomNumbers) {
-    int matchCount = (int) randomNumbers.stream()
-        .filter(this.numbers::contains)
-        .count();
+    int matchCount = this.winningNumbers.countMatches(randomNumbers);
     boolean bonusCorrect = randomNumbers.contains(this.bonusNumber);
     return Rank.of(matchCount, bonusCorrect);
+  }
+
+  private void validateBonusNumber(int bonusNumber) {
+    if (bonusNumber < MIN_NUMBER || bonusNumber > MAX_NUMBER) {
+      throw new IllegalArgumentException("[ERROR] 보너스 번호는 "+MIN_NUMBER+"부터 "+MAX_NUMBER+" 사이여야 합니다." );
+    }
+    if (this.winningNumbers.contains(bonusNumber)) {
+      throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+    }
   }
 }

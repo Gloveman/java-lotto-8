@@ -30,10 +30,30 @@ public class Lotto {
    * @param winningLotto 당첨 번호(6개 번호 + 1개 보너스 번호)를 표현하는 객체
    * @return 해당 등수 정보를 담은 Rank enum
    */
-    public Rank checkRank(WinningLotto winningLotto) {
+  public Rank checkRank(WinningLotto winningLotto) {
       return winningLotto.calculateRank(this.numbers);
-    }
+  }
 
+  /**
+   * 구매 번호에 특정 번호가 포함되어 있는지 확인
+   *
+   * @param number 확인할 번호
+   * @return 해당 번호 포함 여부
+   */
+  public boolean contains(int number) {
+    return this.numbers.contains(number);
+  }
+
+  /**
+   *
+   * @param otherNumbers 다른 번호 리스트
+   * @return 일치 개수
+   */
+  public int countMatches(List<Integer> otherNumbers) {
+    return (int)otherNumbers.stream()
+        .filter(this.numbers::contains)
+        .count();
+  }
   /**
    * 구매 정보 출력과 테스트를 위한 로또 번호 getter 메서드
    *
@@ -45,16 +65,18 @@ public class Lotto {
 
     private void validate(List<Integer> numbers) {
         if (numbers.size() != TOTAL_NUMBERS) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 6개여야 합니다.");
+            throw new IllegalArgumentException("[ERROR] 로또 번호는 "+TOTAL_NUMBERS+"개여야 합니다.");
         }
         Set<Integer> uniqueNumbers = new HashSet<>();
         for (Integer number : numbers) {
           if (number < MIN_NUMBER ||  number > MAX_NUMBER) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이여야 합니다.");
+            throw new IllegalArgumentException("[ERROR] 로또 번호는 "+MIN_NUMBER+"부터 "+MAX_NUMBER+" 사이여야 합니다.");
           }
            if(!uniqueNumbers.add(number)) {
              throw new IllegalArgumentException("[ERROR] 로또 번호는 중복될 수 없습니다.");
            }
         }
     }
+
+
 }
